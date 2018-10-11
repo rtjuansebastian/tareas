@@ -1,12 +1,14 @@
 class TareasController < ApplicationController
 
+	before_action :set_tarea, only: [:show,:edit,:update,:destroy]
+
 	def index
 		@tareas = Tarea.all
 		#select * from tareas
 	end
 
 	def show
-		@tarea = Tarea.find(params[:id])
+		#aqui se ejecuta el callback		
 		#select * from tareas where id=:id
 	end
 
@@ -20,33 +22,38 @@ class TareasController < ApplicationController
 			descripcion: params[:tarea][:descripcion])
 		if @tarea.save						
 			#insert into tareas(titulo,descripcion) values('','')
-			redirect_to controller: "tareas", action: "show", id: @tarea.id
+			redirect_to @tarea
 		else
 			render "new"
 		end
 	end
 
 	def edit
-		@tarea = Tarea.find(params[:id])
+
 	end
 
 	def update
-		@tarea = Tarea.find(params[:id])
 		if @tarea.update(
 			titulo: params[:tarea][:titulo],
 			descripcion: params[:tarea][:descripcion]
 			)
-			redirect_to controller: "tareas", action: "show"
+			redirect_to @tarea
+			#redirige al metodo show 
+			#con el id de la tarea
 		else
 			render "edit"
 		end
 	end
 
 	def destroy
-		@tarea = Tarea.find(params[:id])
 		@tarea.destroy
-		redirect_to controller: "tareas",
-			action: "index"
+		redirect_to tareas_path
+		#redirige al index de tareas
 	end
 
+	private
+
+	def set_tarea
+		@tarea = Tarea.find(params[:id])
+	end
 end
