@@ -1,10 +1,12 @@
 Rails.application.routes.draw do  
   
-
+  
   devise_for :usuarios
   # get 'usuarios/sign_in'
   # get 'usuarios/sign_up'
-  resources :tareas
+  resources :tareas do
+    resources :comentarios
+  end
   #Rutas para manipular un recurso (CRUD)
   #get 'tareas', to: "tareas#index"
   #get 'tareas/new', to: "tareas#new"

@@ -1,5 +1,8 @@
 class TareasController < ApplicationController
 
+	before_action :authenticate_usuario!, except: [:index,:show]
+	#authenticate valida si ya esta el usuario logueado
+	#sino lo redirige al login
 	before_action :set_tarea, only: [:show,:edit,:update,:destroy]
 
 	def index
@@ -8,8 +11,10 @@ class TareasController < ApplicationController
 	end
 
 	def show
-		#aqui se ejecuta el callback		
+		#aqui se ejecuta el callback
+		#@usuario= Usuario.find(@tarea.usuario_id)				
 		#select * from tareas where id=:id
+		@comentario = Comentario.new
 	end
 
 	def new
@@ -20,6 +25,7 @@ class TareasController < ApplicationController
 		@tarea = Tarea.new(
 			titulo: params[:tarea][:titulo], 
 			descripcion: params[:tarea][:descripcion])
+		@tarea.usuario = current_usuario
 		if @tarea.save						
 			#insert into tareas(titulo,descripcion) values('','')
 			redirect_to @tarea
