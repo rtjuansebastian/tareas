@@ -3,5 +3,5 @@ class Tarea < ApplicationRecord
 	validates :descripcion, presence: true
 
 	belongs_to :usuario
-	has_many :comentarios
+	has_many :comentarios, dependent: :destroy
 end
